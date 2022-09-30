@@ -36,15 +36,7 @@ class DeckCostViewModel extends ChangeNotifier {
   List<DeckItem> get uniqueDecksItems => _uniqueDecksItems;
   List<InventoryItem> get inventories => _inventories;
 
-  DeckCostViewModel() {
-    _deckRepository = DeckRepositoryImpl(InMemoryDeckDataSource());
-    _inventoryRepository = InventoryRepositoryImpl(InMemoryInventoryDataSource());
-    _cardSpecsRepository = CardSpecsRepositoryImpl(RemoteCardSpecsDataSource(HttpCardSpecsApi()), InMemoryCardSpecsDataSource());
-  }
-
-  Future<void> init() async {
-    await _inventoryRepository.insertBulk((await _cardSpecsRepository.getAll()).map((e) => InventoryItem(card: e,quantity: 0)).toList());
-  }
+  DeckCostViewModel(this._deckRepository, this._inventoryRepository, this._cardSpecsRepository);
 
   Future<void> addDeck(String deckUrl) async {
     CreateDeckUseCase createDeck = CreateDeckUseCase(_deckRepository, _cardSpecsRepository);
@@ -86,5 +78,52 @@ class DeckCostViewModel extends ChangeNotifier {
   int updateTotalDeckCost(List<DeckItem> deckItems, List<InventoryItem> inventoryItems) {
     CalcDeckItemsCostUseCase calcCost = CalcDeckItemsCostUseCase();
     return calcCost.execute(deckItems, inventoryItems);
+  }
+
+  Map<String, int> getCostByExpansion() {
+    List<String> expansions =
+    _uniqueDecksItems.map((e) => e.card.expansionCode).toSet().toList();
+    expansions = expansions.where((element) => element != "").toList();
+    expansions.sort((a, b) => a.compareTo(b));
+
+    List<int> expansionsDmp = expansions
+        .map((x) {
+
+          int expansionTotal = _uniqueDecksItems.fold<int>(0, (prev, req) {
+            if(req.card.expansionCode == x) {
+              int i = _inventories.indexWhere((element) => element.card.name == req.card.name);
+
+              int total = 0;
+
+              if(i < 0) {
+                total = req.quantity * req.card.generateDmp;
+              } else {
+                total = req.quantity * req.card.generateDmp - _inventories[i].quantity * _inventories[i].card.generateDmp;
+              }
+
+
+              prev = prev + (total < 0? 0 : total);
+            }
+
+            return prev;
+          });
+
+          return expansionTotal;
+        })
+        .toList();
+
+    for (int i = expansions.length - 1; i >= 0; i--) {
+      if (expansionsDmp[i] <= 0) {
+        expansions.removeAt(i);
+        expansionsDmp.removeAt(i);
+      }
+    }
+
+    Map<String, int> map = {};
+    for(var i = 0; i < expansions.length ; i++) {
+      map[expansions[i]] = expansionsDmp[i];
+    }
+
+    return map;
   }
 }

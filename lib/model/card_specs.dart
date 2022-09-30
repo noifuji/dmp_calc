@@ -31,4 +31,5 @@ class CardSpecs {
   final int convertDmp;
   final String expansionCode;
   final bool secretFlag;
+  String? originalCardId;
 }

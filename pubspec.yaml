@@ -1,5 +1,5 @@
 name: dmp_calc
-description: A new Flutter project.
+description: Duel Masters Play's point calculator
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -42,6 +42,8 @@ dependencies:
   url_strategy: ^0.2.0
   firebase_core: ^1.14.0
   firebase_analytics: ^9.1.4
+  breakpoint: ^1.2.0
+  side_navigation: ^1.0.2
 
 dev_dependencies:
   flutter_test:

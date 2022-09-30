@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../assets/constants.dart' as constants;
+import '../../assets/constants.dart' as constants;
 
 class ManaSymbolIcon extends StatelessWidget {
   final String color;

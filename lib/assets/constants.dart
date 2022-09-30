@@ -96,6 +96,12 @@ const List<Map<String,String>> DECK_COLORS = [
 ];
 
 const List<Map<String,String>> FINISHER_LIST = [
+  { "id": "259200", "abbreviation": "エクス" },
+  { "id": "190500", "abbreviation": "ゲート" },
+  { "id": "181720", "abbreviation": "キリコ"},
+  { "id": "181700", "abbreviation": "キリコ"},
+  { "id": "239120", "abbreviation": "MRCロマノフ"},
+  { "id": "239100", "abbreviation": "MRCロマノフ"},
   { "id": "60100", "abbreviation": "天門" },
   { "id": "93700", "abbreviation": "ゲート" },
   { "id": "41820", "abbreviation": "カチュア" },
@@ -128,6 +134,7 @@ const double DMP_PER_PACK = 212.59;
 const double DMP_PER_BUILDER = 3480;
 const double DMP_PER_SUPERDECK = 5930;
 const double DMP_PER_SR_TICKET = 677;
+const double DMP_PER_VIC_CARD = 800;
 const double DMP_PER_SR_CARD = 600;
 const double DMP_PER_VR_CARD = 200;
 const double DMP_PER_R_CARD = 70;
@@ -143,6 +150,7 @@ const String accountAssetGold = 'ゴールド';
 const String accountAssetDmp = 'DMポイント';
 const String accountAssetPacks = '総パック数';
 const String accountAssetSRPacks = '総SRパック数';
+const String accountAssetVICCards = 'VICカード枚数';
 const String accountAssetSRCards = 'SRカード枚数';
 const String accountAssetVRCards = 'VRカード枚数';
 const String accountAssetRCards = 'Rカード枚数';
@@ -155,6 +163,7 @@ const List<String> accountAssetNames = [
   accountAssetDmp,
   accountAssetPacks,
   accountAssetSRPacks,
+  accountAssetVICCards,
   accountAssetSRCards,
   accountAssetVRCards,
   accountAssetRCards,
@@ -169,6 +178,7 @@ const Map<String, double> accountAssetsInDmp = {
   accountAssetDmp: 1.0,
   accountAssetPacks: DMP_PER_PACK,
   accountAssetSRPacks: DMP_PER_SR_TICKET,
+  accountAssetVICCards: DMP_PER_VIC_CARD,
   accountAssetSRCards: DMP_PER_SR_CARD,
   accountAssetVRCards: DMP_PER_VR_CARD,
   accountAssetRCards: DMP_PER_R_CARD,
@@ -179,4 +189,5 @@ const Map<String, double> accountAssetsInDmp = {
 };
 
 
-const String cardMasterUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/staging-breaknews.link/CardMaster.csv':'https://dmpcalc.link/CardMaster.csv';
+const String cardMasterUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/CardMaster.csv':'https://dmpcalc.link/CardMaster.csv';
+const String psychicRelationUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/PsychicRelation.csv':'https://dmpcalc.link/PsychicRelation.csv';

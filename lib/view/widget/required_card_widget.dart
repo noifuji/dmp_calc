@@ -2,13 +2,13 @@ import 'package:dmp_calc/viewmodel/deck_cost_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../model/deck_item.dart';
+import '../../model/deck_item.dart';
 import 'mana_symbol_icon.dart';
 
-import '../assets/constants.dart' as constants;
+import '../../assets/constants.dart' as constants;
 
-class RequiredCard extends StatelessWidget {
-  RequiredCard({
+class RequiredCardWidget extends StatelessWidget {
+  RequiredCardWidget({
     required this.deckItem,
     Key? key,
   }) : super(key: key);

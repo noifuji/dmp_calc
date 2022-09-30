@@ -15,6 +15,7 @@ import 'package:dmp_calc/model/deck.dart';
 import 'package:dmp_calc/model/deck_item.dart';
 import 'package:dmp_calc/model/inventory_item.dart';
 import 'package:dmp_calc/model/repository/api/http_card_specs_api.dart';
+import 'package:dmp_calc/model/repository/api/http_psychic_relation_api.dart';
 import 'package:dmp_calc/model/repository/card_specs_repository_impl.dart';
 import 'package:dmp_calc/model/repository/datasource/in_memory_card_specs_data_source.dart';
 import 'package:dmp_calc/model/repository/datasource/in_memory_deck_data_source.dart';
@@ -30,7 +31,7 @@ void main() {
   test('Blue deck should have blue deck name. ', () async {
     DeckRepository deckRepo = DeckRepositoryImpl(InMemoryDeckDataSource());
     CreateDeckUseCase createDeck = CreateDeckUseCase(deckRepo,
-        CardSpecsRepositoryImpl(RemoteCardSpecsDataSource(HttpCardSpecsApi()),
+        CardSpecsRepositoryImpl(RemoteCardSpecsDataSource(HttpCardSpecsApi(), HttpPsychicRelationApi()),
             InMemoryCardSpecsDataSource()));
 
     expect(createDeck.decodeCardId('PUAK'), '10500');

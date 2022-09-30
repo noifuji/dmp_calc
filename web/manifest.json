@@ -1,11 +1,11 @@
 {
-    "name": "dmp_calc",
-    "short_name": "dmp_calc",
+    "name": "デュエプレポイント計算ツール",
+    "short_name": "デュエプレ計算",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "デッキの生成に必要なポイントの計算。アカウントの数値化にご利用ください。",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

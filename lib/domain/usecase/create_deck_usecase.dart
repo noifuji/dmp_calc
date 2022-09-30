@@ -1,15 +1,17 @@
+import 'Dart:math';
+
 import 'package:dmp_calc/domain/repository/deck_repository.dart';
 import 'package:dmp_calc/exception/dmp_calc_exception.dart';
 import 'package:dmp_calc/model/card_specs.dart';
 import 'package:dmp_calc/model/deck.dart';
 import 'package:dmp_calc/model/deck_item.dart';
+import 'package:flutter/foundation.dart';
 
 import '../repository/card_specs_repository.dart';
 import '../../assets/constants.dart' as constants;
 import 'package:uuid/uuid.dart';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
-
 
 class CreateDeckUseCase {
   DeckRepository _deckRepository;
@@ -26,32 +28,93 @@ class CreateDeckUseCase {
       throw DmpCalcException('エラー:デッキURLがおかしいです。');
     }
     List<String>? ids = uri.queryParameters['c']?.split('.');
+    List<String>? psychicIds = uri.queryParameters['s']?.split('.');
     if (ids == null) {
       throw DmpCalcException('エラー:デッキURLがおかしいです。');
     }
     List<String> cardIds = ids.map((e) => decodeCardId(e)).toList();
     List<String> distinctCardIds = cardIds.toSet().toList();
-
     List<CardSpecs> cards = await _cardSpecsRepository.getList(distinctCardIds);
-
     List<DeckItem> deckItems = cards
-        .map((e) => DeckItem(card: e,
-            quantity: cardIds.where((element) => element == e.id).length, zone: ZoneType.main))
+        .map((e) => DeckItem(
+            card: e,
+            quantity: cardIds.where((element) => element == e.id).length,
+            zone: ZoneType.main))
         .toList();
 
     //デッキ名取得
     String name = generateDeckName(deckItems);
 
-    await FirebaseAnalytics.instance.logEvent(
-      name: "add_deck",
-      parameters: {
-        "deck_name": name,
-        "url": url,
-      },
-    );
+    if (!kDebugMode) {
+      await FirebaseAnalytics.instance.logEvent(
+        name: "add_deck",
+        parameters: {
+          "deck_name": name,
+          "url": url,
+        },
+      );
+    }
 
+    //サイキッククリーチャーの処理
+    if (psychicIds != null && psychicIds.isNotEmpty && psychicIds[0] != "") {
+      List<String> psychicCardIds =
+          psychicIds.map((e) => decodeCardId(e)).toList();
+      List<CardSpecs> psychicCards =
+          await _cardSpecsRepository.getList(psychicCardIds);
 
-    await _deckRepository.insert(Deck(id: Uuid().v1(),name:  name, url: url, deckItems: deckItems));
+      //複数のサイキックカードが1つのオリジナルカードにひもつく場合の処理
+      //オリジナルID:カード、のマップを作成
+      //
+      //カードIDが異なり、オリジナルIDが一致するカードを探す
+      //カードIDのうち最大枚数をオリジナルIDの枚数とする。
+      Map<String, List<CardSpecs>> originalIdAndPsychicMap = {};
+      for (var psychic in psychicCards) {
+        if (psychic.originalCardId != null) {
+          CardSpecs c =
+              await _cardSpecsRepository.getOne(psychic.originalCardId!);
+          if (originalIdAndPsychicMap[c.id] == null) {
+            originalIdAndPsychicMap[c.id] = [psychic];
+          } else {
+            originalIdAndPsychicMap[c.id]!.add(psychic);
+          }
+        }
+      }
+
+      //オリジナルカードのリストを作成
+      List<DeckItem> originalDeckItems =
+          (await Future.wait(originalIdAndPsychicMap.keys.map((e) async {
+        Map<String, int> a =
+            originalIdAndPsychicMap[e]!.fold<Map<String, int>>({}, (prev, ele) {
+          if (prev[ele.id] == null) {
+            prev[ele.id] = 1;
+          } else {
+            prev[ele.id] = prev[ele.id]! + 1;
+          }
+          return prev;
+        });
+        return DeckItem(
+            card: await _cardSpecsRepository.getOne(e),
+            quantity: a.values.toList().reduce(max),
+            zone: ZoneType.main);
+      }))).toList();
+
+      //deckItemsと比較して、必要枚数を変更
+      for (var original in originalDeckItems) {
+        int index = deckItems
+            .indexWhere((element) => element.card.name == original.card.name);
+
+        if (index < 0) {
+          deckItems.add(original);
+        } else {
+          if (original.quantity > deckItems[index].quantity) {
+            deckItems[index].quantity = original.quantity;
+          }
+        }
+      }
+    }
+
+    await _deckRepository.insert(
+        Deck(id: Uuid().v1(), name: name, url: url, deckItems: deckItems));
   }
 
   /*
@@ -107,6 +170,7 @@ class CreateDeckUseCase {
                 (element) => element['id'] != "93700")['abbreviation']!;
       }
 
+
       return deckName + finishers[0]['abbreviation']!;
     }
 
@@ -116,7 +180,7 @@ class CreateDeckUseCase {
       for (int i = 0; i < curr.quantity; i++) {
         List<String> r = curr.card.race.split("／");
         for (var x in r) {
-          if (x != "-") {
+          if (x != "-" && x != "") {
             prev.add(x);
           }
         }
@@ -125,8 +189,7 @@ class CreateDeckUseCase {
     });
 
     //種族の集計を作成
-    Map<String, int> raceSummary =
-        races.fold(<String, int>{}, (accu, current) {
+    Map<String, int> raceSummary = races.fold(<String, int>{}, (accu, current) {
       accu[current] = accu[current] == null ? 1 : (accu[current]! + 1);
       return accu;
     });
@@ -142,6 +205,9 @@ class CreateDeckUseCase {
     });
 
     if (raceSummary[theMostRace]! >= 20) {
+
+
+      print("sss");
       return deckName + theMostRace;
     }
 
@@ -180,7 +246,9 @@ class CreateDeckUseCase {
 
   int compareRarity(String a, String b) {
     Map<String, int> rarityDef = {
+      "VIC": 110,
       "SR": 100,
+      "PS": 95,
       "VR": 90,
       "R": 80,
       "UC": 70,
