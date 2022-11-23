@@ -32,7 +32,15 @@ class CreateDeckUseCase {
     if (ids == null) {
       throw DmpCalcException('エラー:デッキURLがおかしいです。');
     }
+
+
+
     List<String> cardIds = ids.map((e) => decodeCardId(e)).toList();
+    //シークレットを通常版に修正
+    cardIds = cardIds.map((e) => e.substring(0,e.length-2) + "00").toList();
+    if (kDebugMode) {
+      print(cardIds);
+    }
     List<String> distinctCardIds = cardIds.toSet().toList();
     List<CardSpecs> cards = await _cardSpecsRepository.getList(distinctCardIds);
     List<DeckItem> deckItems = cards

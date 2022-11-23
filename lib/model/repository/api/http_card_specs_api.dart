@@ -18,6 +18,8 @@ class HttpCardSpecsApi implements CardSpecsApi {
         eol: '\n', fieldDelimiter: ','
     );
 
+
+
     List<List> listCreated = converter.convert(decodedResponseBody);
     List<CardSpecs> cardSpecsList = listCreated.where((row) => row.length >= 15)
         .map((e) {
@@ -36,7 +38,7 @@ class HttpCardSpecsApi implements CardSpecsApi {
           generateDmp: e[11] == '-' ? 0 : e[11],
           convertDmp: e[12] == '-' ? 0 : e[12],
           expansionCode: e[13].toString(),
-          secretFlag: e[14] == 20);
+          secretFlag: e[14] != 0);
     }).toList();
 
     return Future<List<CardSpecs>>.value(cardSpecsList);
