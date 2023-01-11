@@ -189,5 +189,5 @@ const Map<String, double> accountAssetsInDmp = {
 };
 
 
-const String cardMasterUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/CardMaster.csv':'https://dmpcalc.link/CardMaster.csv';
-const String psychicRelationUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/PsychicRelation.csv':'https://dmpcalc.link/PsychicRelation.csv';
+const String cardMasterUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/CardMaster.csv':'https://dmpcalc.ezway.link/CardMaster.csv';
+const String psychicRelationUrl = kDebugMode ? 'https://s3.ap-northeast-1.amazonaws.com/dmp-game-charge-calculator-staging/PsychicRelation.csv':'https://dmpcalc.ezway.link/PsychicRelation.csv';
