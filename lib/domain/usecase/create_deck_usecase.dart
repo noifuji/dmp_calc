@@ -34,8 +34,12 @@ class CreateDeckUseCase {
     }
 
 
-
-    List<String> cardIds = ids.map((e) => decodeCardId(e)).toList();
+    List<String> cardIds = [];
+    try {
+      cardIds = ids.map((e) => decodeCardId(e)).toList();
+    } on FormatException {
+      throw DmpCalcException('エラー:デッキURLがおかしいです。');
+    }
     //シークレットを通常版に修正
     cardIds = cardIds.map((e) => e.substring(0,e.length-2) + "00").toList();
     if (kDebugMode) {
@@ -65,8 +69,15 @@ class CreateDeckUseCase {
 
     //サイキッククリーチャーの処理
     if (psychicIds != null && psychicIds.isNotEmpty && psychicIds[0] != "") {
-      List<String> psychicCardIds =
+      List<String> psychicCardIds = [];
+      try{
+      psychicCardIds =
           psychicIds.map((e) => decodeCardId(e)).toList();
+    } on FormatException {
+      throw DmpCalcException('エラー:デッキURLがおかしいです。');
+    }
+      //シークレットを通常版に修正
+      psychicCardIds = psychicCardIds.map((e) => e.substring(0,e.length-2) + "00").toList();
       List<CardSpecs> psychicCards =
           await _cardSpecsRepository.getList(psychicCardIds);
 

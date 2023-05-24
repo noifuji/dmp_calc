@@ -109,7 +109,7 @@ class MyAppState extends State<MyApp> {
                   ChangeNotifierProvider.value(value: _accountValueViewModel),
                 ],
                 child: MaterialApp(
-                  title: 'デュエプレ計算ツール',
+                  title: 'デュエプレ計算ツール(20弾対応)',
                   theme: ThemeData(
                     brightness: Brightness.light,
                   ),
@@ -117,7 +117,7 @@ class MyAppState extends State<MyApp> {
                     brightness: Brightness.dark,
                   ),
                   themeMode: ThemeMode.dark,
-                  home: const MyHomePage(title: 'デュエプレ計算ツール'),
+                  home: const MyHomePage(title: 'デュエプレ計算ツール(20弾対応)'),
                 ));
           }
         });
@@ -161,9 +161,9 @@ class _MyHomePageState extends State<MyHomePage> {
         _widgetOptionsForDesktop.add(AccountValueScreen());
         return Scaffold(
           appBar: AppBar(
-            title: const Text(
-              'デュエプレ計算ツール',
-              style: TextStyle(fontFamily: constants.appFont),
+            title: Text(
+              widget.title,
+              style: const TextStyle(fontFamily: constants.appFont),
             ),
           ),
           body: Row(children:[
