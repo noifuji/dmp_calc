@@ -11,7 +11,7 @@ aws --region ap-northeast-1 s3 sync ./build/web s3://dmp-game-charge-calculator-
 
 
 CloudFront invalidate
-aws cloudfront create-invalidation --distribution-id EMT0EG9PPWIMU --paths "/*"
+aws cloudfront create-invalidation --distribution-id E1V2TM1VWGB8H7 --paths "/*"
 
 
 
