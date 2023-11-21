@@ -15,7 +15,7 @@ class InMemoryCardSpecsDataSource {
 
   Future<List<CardSpecs>> getList(List<String> cardIds) {
     return Future<List<CardSpecs>>.value(cardIds.map((e) => _cardSpecs.firstWhere((element) => element.id == e, orElse: () => throw DmpCalcException(
-      "見つからないカードがあります。ブラウザを更新してみてください。"
+      "見つからないカードがあります。ブラウザを更新してみてください。:$e"
     ))).toList());
   }
 
