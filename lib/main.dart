@@ -109,7 +109,7 @@ class MyAppState extends State<MyApp> {
                   ChangeNotifierProvider.value(value: _accountValueViewModel),
                 ],
                 child: MaterialApp(
-                  title: 'デュエプレ計算ツール(23弾対応)',
+                  title: 'デュエプレ計算ツール(LOP2024対応)',
                   theme: ThemeData(
                     brightness: Brightness.light,
                   ),
@@ -117,7 +117,7 @@ class MyAppState extends State<MyApp> {
                     brightness: Brightness.dark,
                   ),
                   themeMode: ThemeMode.dark,
-                  home: const MyHomePage(title: 'デュエプレ計算ツール(23弾対応)'),
+                  home: const MyHomePage(title: 'デュエプレ計算ツール(LOP2024対応)'),
                 ));
           }
         });
