@@ -134,6 +134,7 @@ const double DMP_PER_PACK = 212.59;
 const double DMP_PER_BUILDER = 3480;
 const double DMP_PER_SUPERDECK = 5930;
 const double DMP_PER_SR_TICKET = 677;
+const double DMP_PER_LEG_CARD = 800;
 const double DMP_PER_VIC_CARD = 800;
 const double DMP_PER_SR_CARD = 600;
 const double DMP_PER_VR_CARD = 200;
@@ -150,6 +151,7 @@ const String accountAssetGold = 'ゴールド';
 const String accountAssetDmp = 'DMポイント';
 const String accountAssetPacks = '総パック数';
 const String accountAssetSRPacks = '総SRパック数';
+const String accountAssetLEGCards = 'LEGカード枚数';
 const String accountAssetVICCards = 'VICカード枚数';
 const String accountAssetSRCards = 'SRカード枚数';
 const String accountAssetVRCards = 'VRカード枚数';
@@ -163,6 +165,7 @@ const List<String> accountAssetNames = [
   accountAssetDmp,
   accountAssetPacks,
   accountAssetSRPacks,
+  accountAssetLEGCards,
   accountAssetVICCards,
   accountAssetSRCards,
   accountAssetVRCards,
@@ -178,6 +181,7 @@ const Map<String, double> accountAssetsInDmp = {
   accountAssetDmp: 1.0,
   accountAssetPacks: DMP_PER_PACK,
   accountAssetSRPacks: DMP_PER_SR_TICKET,
+  accountAssetLEGCards: DMP_PER_LEG_CARD,
   accountAssetVICCards: DMP_PER_VIC_CARD,
   accountAssetSRCards: DMP_PER_SR_CARD,
   accountAssetVRCards: DMP_PER_VR_CARD,
