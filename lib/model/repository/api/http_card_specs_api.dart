@@ -11,7 +11,9 @@ import '../../../../assets/constants.dart' as constants;
 class HttpCardSpecsApi implements CardSpecsApi {
   @override
   Future<List<CardSpecs>> fetchCardSpecs() async {
-    Response response = await http.get(Uri.parse(constants.cardMasterUrl));
+    var timestamp = DateTime.now().millisecondsSinceEpoch;
+    var url = constants.cardMasterUrl + "?nocache=$timestamp";
+    Response response = await http.get(Uri.parse(url));
     String decodedResponseBody = Utf8Decoder().convert(response.bodyBytes);
 
     csv.CsvToListConverter converter = const csv.CsvToListConverter(

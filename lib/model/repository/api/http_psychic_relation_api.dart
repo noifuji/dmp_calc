@@ -12,7 +12,9 @@ class HttpPsychicRelationApi implements PsychicRelationApi {
 
   @override
   Future<Map<String, String>> fetchPsychicRelation() async {
-    Response response = await http.get(Uri.parse(constants.psychicRelationUrl));
+    var timestamp = DateTime.now().millisecondsSinceEpoch;
+    var url = constants.psychicRelationUrl + "?nocache=$timestamp";
+    Response response = await http.get(Uri.parse(url));
     String decodedResponseBody = Utf8Decoder().convert(response.bodyBytes);
 
     csv.CsvToListConverter converter= const csv.CsvToListConverter(

@@ -265,6 +265,7 @@ class CreateDeckUseCase {
 
   int compareRarity(String a, String b) {
     Map<String, int> rarityDef = {
+      "KDL": 130,
       "LEG": 120,
       "VIC": 110,
       "SR": 100,

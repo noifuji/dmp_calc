@@ -84,7 +84,7 @@ class MyAppState extends State<MyApp> {
             return const SizedBox.shrink();
           } else if (dataSnapshot.hasError) {
             return MaterialApp(
-                title: 'デュエプレ計算ツール',
+                title: 'デュエプレ計算ツール(2025/01/01更新)',
                 theme: ThemeData(
                   brightness: Brightness.light,
                 ),
@@ -109,7 +109,7 @@ class MyAppState extends State<MyApp> {
                   ChangeNotifierProvider.value(value: _accountValueViewModel),
                 ],
                 child: MaterialApp(
-                  title: 'デュエプレ計算ツール(DMPX01対応)',
+                  title: 'デュエプレ計算ツール(2025/01/01更新)',
                   theme: ThemeData(
                     brightness: Brightness.light,
                   ),
@@ -117,7 +117,7 @@ class MyAppState extends State<MyApp> {
                     brightness: Brightness.dark,
                   ),
                   themeMode: ThemeMode.dark,
-                  home: const MyHomePage(title: 'デュエプレ計算ツール(DMPX01対応)'),
+                  home: const MyHomePage(title: 'デュエプレ計算ツール(2025/01/01更新)'),
                 ));
           }
         });
